@@ -6,8 +6,11 @@ const appExpress = express();
 const costCenter = require("./costCenter/costCenter");
 // eslint-disable-next-line max-len
 const estadoSituacionResultado = require("./estadoSituacionResultado/estadoSituacionResultado");
+const {getFirestore} = require("firebase-admin/firestore");
 
 admin.initializeApp();
+const db = getFirestore();
+db.settings({ignoreUndefinedProperties: true});
 
 setGlobalOptions({
   maxInstances: 10,
