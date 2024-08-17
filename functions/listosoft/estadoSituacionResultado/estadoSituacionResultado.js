@@ -14,7 +14,7 @@ const {getFirestore} = require("firebase-admin/firestore");
  * @param {FirebaseFirestore.Firestore} db Instancia de la Base de datos de Firestore.
  * @param {string} collectionName Nombre de la colección.
  * @param {FirebaseFirestore.DocumentReference} balanceRef Referencia del registro de Balance.
- * @param {object} body Body enviado que viene de la solicitud HTTP.
+ * @param {object} body Cuerpo enviado que viene de la solicitud HTTP.
  * @return {string} Resultado de la operación.
  */
 async function deleteCollectionByBalanceRef(db, collectionName, balanceRef, body) {
