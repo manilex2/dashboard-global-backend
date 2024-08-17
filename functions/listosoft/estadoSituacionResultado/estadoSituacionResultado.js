@@ -14,12 +14,13 @@ const {getFirestore} = require("firebase-admin/firestore");
  * @param {FirebaseFirestore.Firestore} db Instancia de la Base de datos de Firestore.
  * @param {string} collectionName Nombre de la colección.
  * @param {FirebaseFirestore.DocumentReference} balanceRef Referencia del registro de Balance.
+ * @param {object} body Body enviado que viene de la solicitud HTTP.
  * @return {string} Resultado de la operación.
  */
-async function deleteCollectionByBalanceRef(db, collectionName, balanceRef) {
+async function deleteCollectionByBalanceRef(db, collectionName, balanceRef, body) {
   const batchSize = 100; // Límite de documentos a eliminar en un solo lote
   try {
-    const collectionRef = db.collection(collectionName).where("balanceId", "==", balanceRef);
+    const collectionRef = db.collection(collectionName).where("balanceId", "==", balanceRef).where("mes", "==", body.mes).where("periodo", "==", body.periodo);
     let snapshot = await collectionRef.limit(batchSize).get();
 
     while (!snapshot.empty) {
@@ -67,10 +68,10 @@ router.post("/", async (req, res) => {
     }
     switch (req.body.tipo) {
       case "I":
-        await deleteCollectionByBalanceRef(db, "statement_income", balanceRef);
+        await deleteCollectionByBalanceRef(db, "statement_income", balanceRef, req.body);
         break;
       case "F":
-        await deleteCollectionByBalanceRef(db, "statement_financial_position", balanceRef);
+        await deleteCollectionByBalanceRef(db, "statement_financial_position", balanceRef, req.body);
         break;
       default:
         break;
