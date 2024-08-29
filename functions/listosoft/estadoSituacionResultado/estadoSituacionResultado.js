@@ -5,7 +5,7 @@ const router = express.Router();
 const axios = require("axios");
 const instance = axios.create({
   baseURL: `${process.env.LISTOSOFT_URL_ENDPOINT}`,
-  headers: {"Authorization": process.env.LISTOSOFT_API_KEY},
+  headers: {"LApiKey": process.env.LISTOSOFT_API_KEY},
 });
 const {getFirestore} = require("firebase-admin/firestore");
 
@@ -77,7 +77,7 @@ router.post("/", async (req, res) => {
         break;
     }
     const batch2 = db.batch();
-    const response = await instance.post("SituacionFinanciera", {
+    const response = await instance.post("EstadoSituacionResultado", {
       periodo: req.body.periodo,
       mes: req.body.mes,
       codigo: req.body.codigo,

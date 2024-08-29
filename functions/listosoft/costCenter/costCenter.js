@@ -5,7 +5,7 @@ const router = express.Router();
 const axios = require("axios");
 const instance = axios.create({
   baseURL: `${process.env.LISTOSOFT_URL_ENDPOINT}`,
-  headers: {"Authorization": process.env.LISTOSOFT_API_KEY},
+  headers: {"LApiKey": process.env.LISTOSOFT_API_KEY},
 });
 const {getFirestore} = require("firebase-admin/firestore");
 
@@ -33,10 +33,13 @@ router.get("/", async (req, res) => {
         id: newDocRef.id,
         codigo: item.codigo,
         nombre: item.nombre,
-        costCenterFatherRef: null, // Se actualizará después si tiene padre
         costCenterFatherIdNum: item.centroCostoIDPadre,
         costCenterIdNumber: item.centroCostoID,
       };
+
+      if (!newDocData.costCenterFatherIdNum) {
+        delete newDocData.costCenterFatherIdNum;
+      }
 
       batch.set(newDocRef, newDocData);
 
@@ -46,7 +49,7 @@ router.get("/", async (req, res) => {
     });
 
     // Actualizar los documentos en batch con los padres
-    nuevosCentrosCosto.forEach((item) => {
+    nuevosCentrosCosto.forEach((item, i) => {
       if (item.centroCostoIDPadre) {
         let costCenterFatherRef = null;
 

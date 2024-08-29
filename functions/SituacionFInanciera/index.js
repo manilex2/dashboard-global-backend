@@ -13,7 +13,7 @@ setGlobalOptions({
 
 const SituacionFinanciera = async (req, res) => {
   try {
-    if (req.headers.authorization != process.env.LISTOSOFT_API_KEY) {
+    if (req.headers.LApiKey != process.env.LISTOSOFT_API_KEY) {
       throw new Error("No autorizado");
     }
     const data = [
