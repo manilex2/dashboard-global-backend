@@ -16,7 +16,7 @@ setGlobalOptions({
 // Programar la función
 exports.updateGSheetCompanies = onSchedule({
   timeZone: "America/Guayaquil",
-  schedule: "30 10 21-22-23-24-25 * 1-5",
+  schedule: "30 10 21-25 * *",
 }, async () => {
   try {
     // Realiza una solicitud HTTP a la función existente
