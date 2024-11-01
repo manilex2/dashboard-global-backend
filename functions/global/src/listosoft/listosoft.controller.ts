@@ -60,23 +60,43 @@ export class ListosoftController {
       if (isEmptyBody) {
         balancesCreados = await this.listosoftService.updateBalanceMacro();
       } else {
-        if (
-          !body.periodo ||
-          !body.mes ||
-          !body.codigo ||
-          !body.ruc ||
-          !body.tipo ||
-          !body.servidor
-        ) {
-          throw new Error(
-            'Campo período, mes, código, ruc, tipo y servidor son obligatorios.',
+        if (!body.periodo) {
+          throw new HttpException(
+            'Campo periodo es obligatorio.',
+            HttpStatus.BAD_REQUEST,
+          );
+        } else if (!body.mes) {
+          throw new HttpException(
+            'Campo mes es obligatorio.',
+            HttpStatus.BAD_REQUEST,
+          );
+        } else if (!body.codigo) {
+          throw new HttpException(
+            'Campo codigo es obligatorio.',
+            HttpStatus.BAD_REQUEST,
+          );
+        } else if (!body.ruc) {
+          throw new HttpException(
+            'Campo ruc es obligatorio.',
+            HttpStatus.BAD_REQUEST,
+          );
+        } else if (!body.tipo) {
+          throw new HttpException(
+            'Campo tipo es obligatorio.',
+            HttpStatus.BAD_REQUEST,
+          );
+        } else if (!body.servidor) {
+          throw new HttpException(
+            'Campo servidor es obligatorio.',
+            HttpStatus.BAD_REQUEST,
           );
         } else if (
           body.tipo == 'I' &&
           (body.esAcumulado == null || body.esAcumulado == undefined)
         ) {
-          throw new Error(
+          throw new HttpException(
             'Cuando tipo es estado de resultado integral es necesario que indique si es acumulado o no',
+            HttpStatus.BAD_REQUEST,
           );
         }
         balancesCreados = await this.listosoftService.updateBalance(body);
