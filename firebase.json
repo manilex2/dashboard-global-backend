@@ -15,7 +15,8 @@
         "npm --prefix \"functions/global\" run lint",
         "npm --prefix \"functions/global\" run build",
         "copy \"functions\\global\\.env\" \"functions\\global\\dist\"",
-        "copy \"functions\\global\\package.json\" \"functions\\global\\dist\""
+        "copy \"functions\\global\\package.json\" \"functions\\global\\dist\"",
+        "copy \"functions\\global\\src\\gsheet\\credentials.json\" \"functions\\global\\dist\""
       ],
       "runtime": "nodejs20"
     },
