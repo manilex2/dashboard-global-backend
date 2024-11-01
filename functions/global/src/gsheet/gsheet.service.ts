@@ -230,11 +230,11 @@ export class GsheetService {
       const now = DateTime.now();
       const month = now.month.toString().padStart(2, '0');
       const year = now.year.toString().padStart(4, '0');
-      const companies = (await this.db.collection('companies').get()).docs.map(
-        (doc) => {
-          return doc;
-        },
-      );
+      const companies = (
+        await this.db.collection('companies').where('enable', '==', true).get()
+      ).docs.map((doc) => {
+        return doc;
+      });
       if (companies.length == 0) {
         console.log('No hay ninguna compañía registrada.');
         return balancesSaved;
