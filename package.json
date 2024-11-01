@@ -1,0 +1,19 @@
+{
+  "name": "dashboard-global-backend",
+  "version": "1.0.0",
+  "description": "Funciones Cloud para la app de Dashboard de Global",
+  "main": "index.js",
+  "scripts": {
+      "lint": "eslint --ext .js,.ts .",
+      "build": "cd functions/global && npm run build",
+      "serve": "npm run build && copy \"functions\\global\\package.json\" \"functions\\global\\dist\" && copy \"functions\\global\\.env\" \"functions\\global\\dist\" && copy \"functions\\global\\src\\gsheet\\credentials.json\" \"functions\\global\\dist\\credentials.json\" && firebase emulators:start --only functions",
+      "shell": "npm run build && firebase functions:shell",
+      "start": "npm run shell",
+      "deploy": "firebase deploy --only functions",
+      "logs": "firebase functions:log"
+    },
+  "private": true,
+  "engines": {
+    "node": "18"
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "functions": [
+    {
+      "source": "functions/global/dist",
+      "codebase": "global",
+      "ignore": [
+        "node_modules",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log",
+        "*.local"
+      ],
+      "predeploy": [
+        "copy \"functions\\global\\package.json\" \"functions\\global\\dist\"",
+        "npm --prefix \"functions/global\" run lint",
+        "npm --prefix \"functions/global\" run build",
+        "copy \"functions\\global\\.env\" \"functions\\global\\dist\"",
+        "copy \"functions\\global\\package.json\" \"functions\\global\\dist\""
+      ],
+      "runtime": "nodejs20"
+    },
+    {
+      "source": "functions/updateListosoftCompanies",
+      "codebase": "update-listosoft-companies",
+      "ignore": [
+        "node_modules",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log",
+        "*.local"
+      ],
+      "predeploy": [
+        "npm --prefix \"$RESOURCE_DIR\" run lint"
+      ],
+      "runtime": "nodejs20"
+    },
+    {
+      "source": "functions/updateGSheetCompanies",
+      "codebase": "update-google-spreadsheet-companies",
+      "ignore": [
+        "node_modules",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log",
+        "*.local"
+      ],
+      "predeploy": [
+        "npm --prefix \"$RESOURCE_DIR\" run lint"
+      ],
+      "runtime": "nodejs20"
+    }
+  ]
+}
