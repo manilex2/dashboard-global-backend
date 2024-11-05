@@ -31,6 +31,7 @@ const createFunction = async (expressInstance: Express) => {
       origin: [
         'https://globso.flutterflow.app',
         'https://app.flutterflow.io/debug',
+        'https://dashboard-global-5ad33.web.app',
       ], // Lista de orígenes permitidos
       methods: 'GET, POST, PUT, DELETE, OPTIONS', // Métodos HTTP permitidos
       allowedHeaders: 'Content-Type, Authorization', // Encabezados permitidos
