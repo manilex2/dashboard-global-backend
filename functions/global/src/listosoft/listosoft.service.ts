@@ -201,7 +201,7 @@ export class ListosoftService {
       const data: BalanceSituacionResponse[] = response.data;
       for (let i = 0; i < data.length; i++) {
         const element = data[i];
-        if (!element.codigo) {
+        if (!element.codigo && !element.cuenta) {
           continue;
         }
         let newDocRef: DocumentReference;
