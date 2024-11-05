@@ -7,7 +7,7 @@ import {
 } from 'firebase-admin/firestore';
 import { google } from 'googleapis';
 import { DateTime } from 'luxon';
-import { ListosoftService } from '../listosoft/listosoft.service';
+import { CommonService } from '../common/common.service';
 
 @Injectable()
 export class GsheetService {
@@ -17,7 +17,7 @@ export class GsheetService {
     scopes: 'https://www.googleapis.com/auth/spreadsheets.readonly',
   });
 
-  constructor(private listoSoftService: ListosoftService) {}
+  constructor(private commonService: CommonService) {}
 
   /**
    * Obtiene registros de Google Speadsheet y los guarda en la base.
@@ -82,7 +82,7 @@ export class GsheetService {
       }
       switch (tipoBalance) {
         case 'I':
-          await this.listoSoftService.deleteCollectionByBalanceRef(
+          await this.commonService.deleteCollectionByBalanceRef(
             this.db,
             'statement_income',
             balanceRef,
@@ -98,7 +98,7 @@ export class GsheetService {
           );
           break;
         case 'F':
-          await this.listoSoftService.deleteCollectionByBalanceRef(
+          await this.commonService.deleteCollectionByBalanceRef(
             this.db,
             'statement_financial_position',
             balanceRef,
