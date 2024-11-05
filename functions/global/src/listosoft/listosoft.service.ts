@@ -201,6 +201,7 @@ export class ListosoftService {
         },
       );
       const data: BalanceSituacionResponse[] = response.data;
+      const registrosSubidos = [];
       for (let i = 0; i < data.length; i++) {
         const element = data[i];
         if (!element.codigo && !element.cuenta) {
@@ -265,6 +266,7 @@ export class ListosoftService {
         const cleanDocData =
           this.commonService.removeEmptyProperties(newDocData);
         batch.set(newDocRef, cleanDocData);
+        registrosSubidos.push(newDocData);
         balancesSaved++;
         batchCount++;
         // Si alcanzamos el límite de 500 operaciones, hacemos commit y reiniciamos el batch

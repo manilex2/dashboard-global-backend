@@ -196,7 +196,9 @@ export class GsheetService {
           }
           count++;
         }
-        batch.set(newDocRef, newDocData);
+        const cleanDocData =
+          this.commonService.removeEmptyProperties(newDocData);
+        batch.set(newDocRef, cleanDocData);
         registrosSubidos.push(newDocData);
         balancesSaved++;
         batchCount++;
