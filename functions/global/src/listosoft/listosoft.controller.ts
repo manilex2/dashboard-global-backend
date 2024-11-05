@@ -11,7 +11,8 @@ import {
 } from '@nestjs/common';
 import { ListosoftService } from './listosoft.service';
 import { Request, Response } from 'express';
-import { BalanceDTO, ParamsDTO } from './listosoft.interface';
+import { ParamsDTO } from './listosoft.interface';
+import { BalanceDTO } from '../common/common.interface';
 
 @Controller('listosoft')
 export class ListosoftController {
