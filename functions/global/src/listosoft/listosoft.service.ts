@@ -21,7 +21,11 @@ export class ListosoftService {
     try {
       let costCentersSaved: number = 0;
       const response = await axios
-        .get(`${process.env.LISTOSOFT_URL_ENDPOINT}:${puerto}/CentrosCostos`)
+        .get(`${process.env.LISTOSOFT_URL_ENDPOINT}:${puerto}/CentrosCostos`, {
+          headers: {
+            LApiKey: process.env.LISTOSOFT_API_KEY,
+          },
+        })
         .catch((err) => {
           throw new Error(err);
         });
@@ -188,6 +192,11 @@ export class ListosoftService {
           codigoSucursal: body.codigoSucursal || null,
           esAcumulado: body.esAcumulado || true,
         },
+        {
+          headers: {
+            LApiKey: process.env.LISTOSOFT_API_KEY,
+          },
+        },
       );
       const data: BalanceSituacionResponse[] = response.data;
       for (let i = 0; i < data.length; i++) {
@@ -251,7 +260,8 @@ export class ListosoftService {
           }
           count++;
         }
-        batch.set(newDocRef, newDocData);
+        const cleanDocData = this.removeEmptyProperties(newDocData);
+        batch.set(newDocRef, cleanDocData);
         balancesSaved++;
         batchCount++;
         // Si alcanzamos el límite de 500 operaciones, hacemos commit y reiniciamos el batch
@@ -370,5 +380,12 @@ export class ListosoftService {
     } catch (error) {
       throw new Error(`Ocurrió el siguiente error: ${error}`);
     }
+  }
+
+  removeEmptyProperties(obj: any): any {
+    return Object.fromEntries(
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      Object.entries(obj).filter(([_, v]) => v !== null && v !== undefined),
+    );
   }
 }
