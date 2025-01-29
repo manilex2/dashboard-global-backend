@@ -243,6 +243,7 @@ export class ListosoftService {
           balanceId: balanceRef,
           statementIncomeFatherId: null,
           statementFinancialFatherId: null,
+          uniqueCodeBC: `${balanceRef.id}_${String(element.codigo)}`,
         };
         while (count < data.length) {
           if (data[i - 1 - count] && element.codigo) {

@@ -176,6 +176,7 @@ export class GsheetService {
           balanceId: balanceRef,
           statementIncomeFatherId: null,
           statementFinancialFatherId: null,
+          uniqueCodeBC: `${balanceRef.id}_${String(element[0])}`,
         };
         while (count < data.length) {
           if (data[i - 1 - count] && String(element[0])) {
