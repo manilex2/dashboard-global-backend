@@ -258,6 +258,9 @@ export class GsheetService {
           );
           continue;
         }
+        console.log(
+          `Encontrado balance de Google Spreadsheet para la compañía: ${company.data().CompanyName}`,
+        );
         for (const balance of balances) {
           const sheetId =
             balance.data().gSheetCodeSFP || balance.data().gSheetCodeSI;

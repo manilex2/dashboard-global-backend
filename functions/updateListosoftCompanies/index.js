@@ -16,7 +16,7 @@ setGlobalOptions({
 // Programar la función
 exports.updateListosoftCompanies = onSchedule({
   timeZone: "America/Guayaquil",
-  schedule: "0 10 21-25 * *",
+  schedule: "0 10 10-14 * *",
 }, async () => {
   try {
     // Realiza una solicitud HTTP a la función existente
