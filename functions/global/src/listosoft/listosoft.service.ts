@@ -180,28 +180,36 @@ export class ListosoftService {
         default:
           break;
       }
-      let batch = this.db.batch();
-      const response = await axios.post(
-        `${process.env.LISTOSOFT_URL_ENDPOINT}:${body.servidor}/API/EstadoSituacionResultado`,
-        {
-          periodo: body.periodo,
-          mes: body.mes,
-          codigo: body.codigo,
-          ruc: body.ruc,
-          tipo: body.tipo,
-          codigoCentroCosto: body.codigoCentroCosto || null,
-          codigoSubCentroCosto: body.codigoSubCentroCosto || null,
-          codigoSucursal: body.codigoSucursal || null,
-          esAcumulado: body.esAcumulado || true,
-        },
-        {
-          headers: {
-            LApiKey: process.env.LISTOSOFT_API_KEY,
+      let data: BalanceSituacionResponse[];
+      try {
+        const response = await axios.post(
+          `${process.env.LISTOSOFT_URL_ENDPOINT}:${body.servidor}/API/EstadoSituacionResultado`,
+          {
+            periodo: body.periodo,
+            mes: body.mes,
+            codigo: body.codigo,
+            ruc: body.ruc,
+            tipo: body.tipo,
+            codigoCentroCosto: body.codigoCentroCosto || null,
+            codigoSubCentroCosto: body.codigoSubCentroCosto || null,
+            codigoSucursal: body.codigoSucursal || null,
+            esAcumulado: body.esAcumulado || true,
           },
-        },
-      );
-      const data: BalanceSituacionResponse[] = response.data;
+          {
+            headers: {
+              LApiKey: process.env.LISTOSOFT_API_KEY,
+            },
+          },
+        );
+        if (![200, 201].includes(response.status)) {
+          return 0;
+        }
+        data = response.data;
+      } catch (axiosError) {
+        return 0;
+      }
       const registrosSubidos = [];
+      let batch = this.db.batch();
       for (let i = 0; i < data.length; i++) {
         const element = data[i];
         if (!element.codigo && !element.cuenta) {
@@ -294,7 +302,7 @@ export class ListosoftService {
     try {
       let balancesSaved: number = 0;
       const now = DateTime.now();
-      const month = now.month.toString().padStart(2, '0');
+      const month = now.minus({ month: 1 }).month.toString().padStart(2, '0');
       const year = now.year.toString().padStart(4, '0');
       const companies = (
         await this.db.collection('companies').where('enable', '==', true).get()
@@ -306,6 +314,7 @@ export class ListosoftService {
         return balancesSaved;
       }
       for (const company of companies) {
+        console.log(`Consultando empresa: ${company.data().CompanyName}...`);
         const balances = (
           await this.db
             .collection('balance')
@@ -335,6 +344,9 @@ export class ListosoftService {
           };
           balancesSaved = balancesSaved + (await this.updateBalance(body));
         }
+        console.log(
+          `Terminada la consulta para ${company.data().CompanyName}.`,
+        );
       }
       return balancesSaved;
     } catch (error) {

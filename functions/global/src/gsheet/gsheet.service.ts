@@ -217,6 +217,7 @@ export class GsheetService {
       if (batchCount > 0) {
         await batch.commit();
       }
+      console.log('Balance actualizado.');
       return balancesSaved;
     } catch (error) {
       throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -231,7 +232,7 @@ export class GsheetService {
     let balancesSaved: number = 0;
     try {
       const now = DateTime.now();
-      const month = now.month.toString().padStart(2, '0');
+      const month = now.minus({ month: 1 }).month.toString().padStart(2, '0');
       const year = now.year.toString().padStart(4, '0');
       const companies = (
         await this.db.collection('companies').where('enable', '==', true).get()
@@ -243,6 +244,7 @@ export class GsheetService {
         return balancesSaved;
       }
       for (const company of companies) {
+        console.log(`Consultando empresa: ${company.data().CompanyName}...`);
         const balances = (
           await this.db
             .collection('balance')
@@ -276,6 +278,9 @@ export class GsheetService {
               sheetId,
             ));
         }
+        console.log(
+          `Terminada la consulta para ${company.data().CompanyName}.`,
+        );
       }
       return balancesSaved;
     } catch (error) {
