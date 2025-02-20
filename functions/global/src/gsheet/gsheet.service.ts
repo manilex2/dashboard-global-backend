@@ -122,15 +122,23 @@ export class GsheetService {
         version: 'v4',
         auth: client,
       });
+      let data = [];
 
-      const requestData = (
-        await googleSheet.spreadsheets.values.get({
-          auth: this.auth,
-          spreadsheetId: googleSheetId,
-          range: `${month}-${year}!A2:F`,
-        })
-      ).data;
-      const data = requestData.values;
+      try {
+        const requestData = (
+          await googleSheet.spreadsheets.values.get({
+            auth: this.auth,
+            spreadsheetId: googleSheetId,
+            range: `${month}-${year}!A2:F`,
+          })
+        ).data;
+        data = requestData.values;
+      } catch (gSheetError) {
+        console.error(
+          `Hubo el siguiente error: ${JSON.stringify(gSheetError)}`,
+        );
+        return 0;
+      }
       const registrosSubidos = [];
 
       if (data == null || data.length == 0) {

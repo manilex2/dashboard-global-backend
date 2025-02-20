@@ -206,6 +206,7 @@ export class ListosoftService {
         }
         data = response.data;
       } catch (axiosError) {
+        console.error(`Hubo el siguiente error: ${JSON.stringify(axiosError)}`);
         return 0;
       }
       const registrosSubidos = [];
